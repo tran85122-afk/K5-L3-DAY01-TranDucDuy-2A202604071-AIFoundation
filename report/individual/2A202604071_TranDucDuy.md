@@ -66,9 +66,13 @@
 
 ## 7. AI log và điều đã học
 
-| Phần | Em hỏi AI gì | AI trả lời / viết gì | Em sửa / kiểm chứng gì |
+
+| Phần | Bạn hỏi AI gì (prompt) | AI trả lời/viết gì | Bạn đã sửa / kiểm chứng gì |
 |---|---|---|---|
-| 4 | Code call_openai, prompt, parse_label, llm_classify_batch | Code | Chạy test mock 4.1–4.4 |
+| Phần 1 | Gửi lỗi `'dict' object has no attribute 'grt'` và ảnh biểu đồ `lr=50` bị `loss=nan` để hỏi nguyên nhân; hỏi vì sao BoW đoán sai các tin thực tế trên màn hình. | Chỉ ra lỗi gõ nhầm `vocab.get(w)` thành `grt`, thiếu `losses.append` và quên xoá `raise NotImplementedError`; giải thích `lr=50` bước nhảy quá lớn gây tràn số `nan` và chữ `"FREEPHONE"` viết liền không khớp từ `"free"`. | Tự sửa `.grt` thành `.get`, thêm `losses.append(bce_loss(y, p))`, thêm dấu `*` khi tính `f1` và xoá `raise NotImplementedError`; chạy check đạt ✅ 1.1–1.4. |
+| Phần 2 | Hỏi cách ghép các lớp trong `build_mlp`, cách tính số tham số của mạng và ý nghĩa 5 dòng huấn luyện trong `train_mlp`. | Giải thích cấu trúc `nn.Sequential`, cách dùng `.squeeze(1)` cho khớp chiều với nhãn `yb`, và giải thích thứ tự 5 bước: `zero_grad` → forward → tính loss → `backward` → `step`. | Tự gõ code hàm `build_mlp` và `train_mlp`; tự kiểm tra lại phép tính 128.129 tham số và chạy check đạt ✅ 2.1–2.2. |
+| Phần 3 | Hỏi công thức tính Cosine Similarity và cách tìm top-k tin giống nhất cho cả ma trận mà không dùng vòng lặp `for`. | Giải thích cách chuẩn hoá độ dài vector bằng `np.linalg.norm(..., axis=1, keepdims=True)` rồi nhân ma trận và lấy thứ tự giảm dần bằng `np.argsort(-scores)[:k]`. | Tự code các hàm 3.1–3.3; cộng thêm `1e-12` ở mẫu số để tránh lỗi chia cho 0 và chạy check đạt ✅ 3.1–3.3. |
+Phần 4 & 5 | Nhờ viết giúp code hoàn chỉnh cho các hàm ở Phần 4 (`call_openai`, `build_classification_prompt`, `parse_label`, `llm_classify_batch`) và hướng dẫn cách giải 5 câu tính tay. | Cung cấp mã nguồn hoàn chỉnh theo đúng chữ ký hàm, xử lý tham số `**provider_kwargs(max_tokens)` cho reasoning model và hàm regex bóc tách nhãn `parse_label`; hướng dẫn các bước tính tay. | Đọc kỹ lại toàn bộ code LLM do AI viết để review tính logic (kiểm tra thứ tự bắt chuỗi `"not spam"` trước `"spam"`), dán vào Colab chạy mock test đạt ✅ 4.1–4.4; tự tính toán các câu tính tay và điền vào `HAND_CALC` đạt ✅ 15/15. |
 
 
 **Điều em đã học:** 
